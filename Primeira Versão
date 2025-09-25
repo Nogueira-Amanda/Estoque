@@ -1,0 +1,76 @@
+# Sistema de cadastro de produtos ERP
+produtos = []
+id_produto = 1
+
+#Loop do menu
+while True:
+    print("\n---Menu Principal---")
+    print("1. Cadastrar novo produto")
+    print("2. Excluir produto cadastrado")
+    print("3. Lançar/Baixar produto")
+    print("4. Visualizar todos os produtos cadastrados")
+    print("5. Sair do sistema.")
+
+    opcao = input("\nDigite o número da opção desejada: ")
+
+
+    #Cadastro de produtos
+    if opcao == "1":
+        nome = input("\nNome do produto: ")
+        quant = int(input("\nQuantidade inicial do produto: "))
+        categoria = input("\nCategoria do produto: ")
+        preco = input("\nPreço unitário do produto: ")
+        produtos.append([id_produto, nome, categoria, quant, preco])
+        id_produto += 1
+        print("\nProduto cadastrado com sucesso!")
+
+    #Excluir produto
+    elif opcao == "2":
+        id_excluir = int(input("Digite o ID do produto que deseja excluir: "))
+        encontrado = False
+        for i, j in enumerate(produtos):
+            if id_excluir == j[0]:
+                del produtos[i]
+                print(f"\nProduto {j[0]} excluído com sucesso!")
+                encontrado = True
+                break
+        else:
+            print("Produto não localizado.")
+
+    #Lançar/Baixar
+    elif opcao == "3":
+        id_mov = int(input("\nDigite o ID do produto que deseja movimentar: "))
+        encontrado = False
+        for i in produtos:
+            if i[0] == id_mov:
+                encontrado = True
+                tipo = int(input("\nDigite '1' para entrada ou '2' para saída de produtos: "))
+                quant = int(input("\nDigite a quantidade: "))
+                if tipo == 1:
+                    i[3] += quant
+                    print("\nAdicionado com sucesso!")
+                elif tipo == 2:
+                    if quant <= i[3]:
+                        i[3] -= quant
+                        print("\nSaída registrada com sucesso!")
+                else:
+                    print("\nQuantidade insuficiente no estoque.")
+            break
+
+    #Visualização
+    elif opcao == "4":
+        if len(produtos) == 0:
+            print("\nNenhum produto cadastrado.")
+        else:
+            print("\nID || Nome || Categoria || Quantidade || Preço ")
+            for i in produtos:
+              alerta = "ATENÇÃO! ESTOQUE BAIXO!" if i[3] < 5 else ""
+              print(f"{i[0]} || {i[1]} || {i[2]} || {i[3]} || {i[4]} || {alerta}")
+
+    #Saindo
+    elif opcao == "5":
+        print("\nPrograma Finalizado com sucesso!")
+        break
+
+    else:
+        print("Opção inválida!")
